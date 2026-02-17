@@ -27,9 +27,9 @@ jobs:
       # 4️⃣ Prepare web folder and permissions
       - name: Prepare Web Folder
         run: |
-          sudo mkdir -p /var/www/html/foodie
-          sudo chown -R ubuntu:ubuntu /var/www/html/foodie
-          sudo chmod -R 755 /var/www/html/foodie
+          sudo mkdir -p /var/www/html/
+          sudo chown -R ubuntu:ubuntu /var/www/html/
+          sudo chmod -R 755 /var/www/html/
 
       # 5️⃣ Deploy website files
       - name: Deploy Website Files
