@@ -3,17 +3,17 @@ name: Deploy Website on Self-Hosted Runner
 on:
   push:
     branches:
-      - main  # Run pipeline on pushes to main branch
+      - main
 
 jobs:
   deploy:
-    runs-on: self-hosted  # Use your EC2 runner
+    runs-on: self-hosted
     steps:
-      # 1️⃣ Checkout code
+      # 1️⃣ Checkout repo
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2️⃣ Update & upgrade system
+      # 2️⃣ Update & upgrade Ubuntu
       - name: Update & Upgrade Ubuntu
         run: |
           sudo apt update -y
@@ -27,15 +27,15 @@ jobs:
       # 4️⃣ Prepare web folder and permissions
       - name: Prepare Web Folder
         run: |
-          sudo mkdir -p /var/www/html/
-          sudo chown -R ubuntu:ubuntu /var/www/html/
-          sudo chmod -R 755 /var/www/html/
+          sudo mkdir -p /var/www/html
+          sudo chown -R ubuntu:ubuntu /var/www/html
+          sudo chmod -R 755 /var/www/html
 
-      # 5️⃣ Deploy website files
+      # 5️⃣ Deploy website files directly to root
       - name: Deploy Website Files
         run: |
-          echo "Deploying website..."
-          rsync -av --delete ./ /var/www/html/foodie/
+          echo "Deploying website to /var/www/html"
+          rsync -av --delete ./ /var/www/html/
 
       # 6️⃣ Restart Apache
       - name: Restart Apache
