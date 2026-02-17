@@ -1,15 +1,15 @@
-name: Deploy Website on EC2 Self-Hosted Runner
+name: Deploy Website on Self-Hosted Runner
 
 on:
   push:
     branches:
-      - main  # runs pipeline on pushes to main branch
+      - main  # Run pipeline on pushes to main branch
 
 jobs:
   deploy:
-    runs-on: self-hosted  # uses your EC2 runner
+    runs-on: self-hosted  # Use your EC2 runner
     steps:
-      # 1️⃣ Checkout repo
+      # 1️⃣ Checkout code
       - name: Checkout Code
         uses: actions/checkout@v4
 
@@ -24,19 +24,20 @@ jobs:
         run: |
           sudo apt install apache2 -y
 
-      # 4️⃣ Set permissions for web directory
-      - name: Set Permissions
+      # 4️⃣ Prepare web folder and permissions
+      - name: Prepare Web Folder
         run: |
+          sudo mkdir -p /var/www/html/foodie
           sudo chown -R ubuntu:ubuntu /var/www/html/foodie
           sudo chmod -R 755 /var/www/html/foodie
 
       # 5️⃣ Deploy website files
-      - name: Deploy Website
+      - name: Deploy Website Files
         run: |
-          echo "Deploying website files..."
+          echo "Deploying website..."
           rsync -av --delete ./ /var/www/html/foodie/
 
-      # 6️⃣ Restart Apache2
+      # 6️⃣ Restart Apache
       - name: Restart Apache
         run: |
           sudo systemctl restart apache2
